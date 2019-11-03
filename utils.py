@@ -32,7 +32,6 @@ def readdata(filename, unix = True):
         timestamps.sort()
     return timestamps
 
-    
 def compareGT(Xstart, Xend, active_truth, timestamps):
     p, r = {}, {}
     TP = {}
@@ -51,10 +50,10 @@ def compareGT(Xstart, Xend, active_truth, timestamps):
               
             if t >= s and t <= f:
                 P[n] += 1.0        
-            if t >= Xstart[n] and t <= Xend[n]:
+            if n in Xstart and t >= Xstart[n] and t <= Xend[n]:
                 S[n] += 1.0
                 
-            if t >= s and t <= f and t >= Xstart[n] and t <= Xend[n]:
+            if n in Xstart and t >= s and t <= f and t >= Xstart[n] and t <= Xend[n]:
                 TP[n] += 1.0             
            
     for n in active_truth:
@@ -126,31 +125,37 @@ def generateGraph(n = 100, seed = 1.0):
 
     
 def generateIntervals(G, distance_in = 1, event_length = 10, distance_inter = 1, overlap = 0.1, seed = 1.0):
-    random.seed(seed)
-    timestmps = []
-    active = {}
-    nodes = G.nodes()
-    shuffle(nodes)
-     
-    current = 0
-    for n in nodes:        
-        s = current        
-        l = event_length
-        for i in xrange(l):
-            neigh = G.neighbors(n)
-            timestmps.append((current, n, np.random.choice(neigh)))
-            current += distance_in
-        current -= distance_in
-        f = current
-        if overlap > 0:
-            current = max(f - int((f-s)*overlap), 0)
-        else:
-            current = f + distance_inter
-        active[n] = (s,f)         
-        
-    timestmps.sort()
-        
-    return timestmps, active
+    for i in xrange(10):
+        try:
+            random.seed(seed)
+            timestmps = []
+            active = {}
+            nodes = G.nodes()
+            shuffle(nodes)
+             
+            current = 0
+            for n in nodes:        
+                s = current        
+                l = event_length
+                for i in xrange(l):
+                    neigh = G.neighbors(n)
+                    timestmps.append((current, n, np.random.choice(neigh)))
+                    current += distance_in
+                current -= distance_in
+                f = current
+                if overlap > 0:
+                    current = max(f - int((f-s)*overlap), 0)
+                else:
+                    current = f + distance_inter
+                active[n] = (s,f)         
+                
+            timestmps.sort()
+                
+            return timestmps, active
+        except:
+            pass
+    print('bad parameters for synthetic dataset')
+    exit()
     
 def checkCoverage(Xstart, Xend, timeSlackIndex):
     uncovered = []    
