@@ -3,11 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import utils
 import random
-import test_budget as budget 
+import budget as budget 
 import pickle
 import numpy as np
-import test_inner_point as inner
-
+import inner_point as inner
+import baseline
+import sys
       
 if __name__ == "__main__":
 
@@ -15,9 +16,11 @@ if __name__ == "__main__":
     plt.rcParams['xtick.labelsize'] = 20
     plt.rcParams['ytick.labelsize'] = 20
 
+    event_length = int(sys.argv[1]) if len(sys.argv) >= 2  else 100
+    num_nodes = int(sys.argv[2]) if len(sys.argv) >= 3  else 100
+
     dataset = 'random'
-    event_length = 100
-    num_nodes = 100
+    
     overlaps = np.linspace(0.5, 1, 30)
            
     
@@ -25,6 +28,7 @@ if __name__ == "__main__":
     
     Cost_IP, P_IP, R_IP, F_IP, Costmax_IP = [], [], [], [], []
     Cost_B, P_B, R_B, F_B, Costmax_B = [], [], [], [], []
+    Cost_BL, P_BL, R_BL, F_BL, Costmax_BL = [], [], [], [], []
     
     for overlap in overlaps:    
         timestamps, active_truth = utils.generateIntervals(G, event_length = event_length, overlap = overlap)        
@@ -48,14 +52,23 @@ if __name__ == "__main__":
         R_B.append(r)
         F_B.append(f)
         Costmax_B.append(utils.getMax(Xstart, Xend)/(event_length-1))
+
+        Xstart, Xend = baseline.baseline2(timestamps)
+
+        Cost_BL.append(utils.getCost(Xstart, Xend)/((event_length-1)*num_nodes))
+        p, r, f = utils.compareGT(Xstart,  Xend, active_truth, timestamps)
+        P_BL.append(p)
+        R_BL.append(r)
+        F_BL.append(f)
+        Costmax_BL.append(utils.getMax(Xstart, Xend)/(event_length-1))
         
     name = 'test_overlaps'    
     plt.figure()
-    #print len(overlaps), len(F_IP)
     plt.plot(overlaps, F_IP, 'k')
     plt.plot(overlaps, F_B, '--r')
+    plt.plot(overlaps, F_BL, ':b')
     plt.xlabel('percent of overlaps', fontsize=25)
-    plt.legend(['Inner', 'Budget'], loc=0)
+    plt.legend(['Inner', 'Budget', '1-Baseline'], loc=0)
     plt.ylabel('F-measure', fontsize = 25)
     plt.ylim((0.3, 1.005))
     plt.xlim((min(overlaps), max(overlaps)))
@@ -65,7 +78,8 @@ if __name__ == "__main__":
     plt.figure()    
     plt.plot(overlaps, Cost_IP, 'k')
     plt.plot(overlaps, Cost_B, '--r')
-    plt.legend(['Inner', 'Budget'], loc=0)
+    plt.plot(overlaps, Cost_BL, ':b')
+    plt.legend(['Inner', 'Budget', '1-Baseline'], loc=0)
     plt.xlabel('percent of overlaps', fontsize = 25)
     plt.ylabel('Relative total length', fontsize = 25)    
     plt.xlim((min(overlaps), max(overlaps)))
@@ -75,7 +89,8 @@ if __name__ == "__main__":
     plt.figure()    
     plt.plot(overlaps, Costmax_IP, 'k')
     plt.plot(overlaps, Costmax_B, '--r')
-    plt.legend(['Inner', 'Budget'], loc=0)
+    plt.plot(overlaps, Costmax_BL, ':b')
+    plt.legend(['Inner', 'Budget', '1-Baseline'], loc=0)
     plt.xlabel('percent of overlaps', fontsize=25)
     plt.ylabel('Relative max length', fontsize = 25)
     plt.xlim((min(overlaps), max(overlaps)))

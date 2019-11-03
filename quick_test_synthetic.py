@@ -15,9 +15,9 @@ if __name__ == "__main__":
     dataset = 'random'
 
     alg = sys.argv[1]
-    event_length = int(sys.argv[2]) if len(sys.argv >= 3)  else 100
-    overlap = float(sys.argv[3]) if len(sys.argv >= 4)  else 0.2
-    num_nodes = int(sys.argv[4]) if len(sys.argv >= 5)  else 100
+    event_length = int(sys.argv[2]) if len(sys.argv) >= 3  else 100
+    overlap = float(sys.argv[3]) if len(sys.argv) >= 4  else 0.2
+    num_nodes = int(sys.argv[4]) if len(sys.argv) >= 5  else 100
     
     print 'algorithm:', alg
     print 'set event length:', event_length

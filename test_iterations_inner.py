@@ -3,10 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import utils
 import random
-import test_budget as budget 
 import pickle
 import numpy as np
-import test_inner_point as inner
+import sys
+import inner_point as inner
+
 
       
 if __name__ == "__main__":
@@ -16,9 +17,10 @@ if __name__ == "__main__":
     plt.rcParams['ytick.labelsize'] = 20
 
     dataset = 'random'
-    event_length = 100
-    overlap = 0.5
-    num_nodes = 100
+
+    event_length = int(sys.argv[1]) if len(sys.argv) >= 2 else 100
+    overlap = float(sys.argv[2]) if len(sys.argv) >= 3 else 0.5
+    num_nodes = int(sys.argv[3]) if len(sys.argv) >= 4  else 100
     
     
     G = utils.generateGraph(n = num_nodes)

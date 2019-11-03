@@ -125,7 +125,7 @@ def generateGraph(n = 100, seed = 1.0):
 
     
 def generateIntervals(G, distance_in = 1, event_length = 10, distance_inter = 1, overlap = 0.1, seed = 1.0):
-    for i in xrange(10):
+    for i in xrange(30):
         try:
             random.seed(seed)
             timestmps = []
