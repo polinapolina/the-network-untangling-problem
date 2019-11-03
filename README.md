@@ -7,9 +7,10 @@ Polina Rozenshtein, Nikolaj Tatti and Aristides Gionis. "The network-untangling 
 * https://pypi.python.org/pypi/networkx/1.11
 
 = Case k=1 =
-inner_point.py implements algorithm Inner
-budget.py implements algorithm Budget
-baseline.py implements a greedy baseline
+
+* inner_point.py implements algorithm Inner
+* budget.py implements algorithm Budget
+* baseline.py implements a greedy baseline
 
 = experiments =
 * quick_test_synthetic.py runs all three algorithms on synthetic dataset.
