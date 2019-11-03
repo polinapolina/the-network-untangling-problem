@@ -165,27 +165,29 @@ def getQ(timestamps):
     O = {n: sorted(set(l)) for n, l in O.iteritems()}
     return O
     
-def runBudget(timestamps, nodeEdgeIndex, b = {}):
-    #nodeEdgeIndex = utils.getIndex(timestamps, alg='budget')
+def runBudget_fixed_budget(timestamps, b = {}):
+    nodeEdgeIndex = utils.getIndex(timestamps, 'budget')
     if not b:
         b = {n: (timestamps[-1][0]-timestamps[0][0]) for n in nodeEdgeIndex}
     Xstart, Xend = budgetAlgorithm(timestamps, nodeEdgeIndex, b)
     return Xstart, Xend
     
-def runBudget_BS(timestamps,nodeEdgeIndex, klow = -1, kup = -1):
+def runBudget(timestamps, maxiter = 10, klow = -1, kup = -1):
     
-    #nodeEdgeIndex = getIndex(timestamps)
+    nodeEdgeIndex = utils.getIndex(timestamps, 'budget')
     maxb = timestamps[-1][0]-timestamps[0][0]
     if klow ==  -1:
         klow, kup = 1./maxb, 1.0 
     b = {n: maxb for n in nodeEdgeIndex}
     LXstart, LXend = budgetAlgorithm(timestamps, nodeEdgeIndex, b)
+    c = 1
     
     alpha = 1.0/maxb
-    while (kup - klow) > alpha:
+    while (kup - klow) > alpha and c < maxiter:
         k = (kup + klow)/2
         b = {n: maxb*k for n in nodeEdgeIndex}
         Xstart, Xend = budgetAlgorithm(timestamps, nodeEdgeIndex, b)
+        c += 1
         uncovered =  utils.checkCoverage(Xstart, Xend, timestamps)
         if uncovered:
             klow = k

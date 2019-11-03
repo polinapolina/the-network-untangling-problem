@@ -9,6 +9,7 @@ import numpy as np
 import inner_point as inner
 import baseline
 import sys
+import argparse
       
 if __name__ == "__main__":
 
@@ -16,10 +17,14 @@ if __name__ == "__main__":
     plt.rcParams['xtick.labelsize'] = 20
     plt.rcParams['ytick.labelsize'] = 20
 
-    event_length = int(sys.argv[1]) if len(sys.argv) >= 2  else 100
-    num_nodes = int(sys.argv[2]) if len(sys.argv) >= 3  else 100
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--intlen", help="length of each active interval", default=100, type=int)
+    parser.add_argument("--nnodes", help="number of nodes in the graph", default=100, type=int)
+    args = parser.parse_args()
 
-    dataset = 'random'
+    event_length = args.intlen
+    num_nodes = args.nnodes
+
     
     overlaps = np.linspace(0.5, 1, 30)
            
@@ -33,8 +38,7 @@ if __name__ == "__main__":
     for overlap in overlaps:    
         timestamps, active_truth = utils.generateIntervals(G, event_length = event_length, overlap = overlap)        
         
-        nodeEdgeIndex = utils.getIndex(timestamps, 'inner')
-        Xstart, Xend = inner.iterateInner(timestamps, nodeEdgeIndex)
+        Xstart, Xend = inner.runInner(timestamps)
         
         Cost_IP.append(utils.getCost(Xstart, Xend)/((event_length-1)*num_nodes))
         p, r, f = utils.compareGT(Xstart,  Xend, active_truth, timestamps)
@@ -43,8 +47,7 @@ if __name__ == "__main__":
         F_IP.append(f)
         Costmax_IP.append(utils.getMax(Xstart, Xend)/(event_length-1))
         
-        nodeEdgeIndex = utils.getIndex(timestamps, 'budget')
-        Xstart, Xend = budget.runBudget(timestamps, nodeEdgeIndex, b = {node: event_length-1 for node in active_truth})
+        Xstart, Xend = budget.runBudget(timestamps)
         
         Cost_B.append(utils.getCost(Xstart, Xend)/((event_length-1)*num_nodes))
         p, r, f = utils.compareGT(Xstart,  Xend, active_truth, timestamps)

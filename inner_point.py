@@ -105,13 +105,17 @@ def getSolution(alphaNodes, m):
     return Xstart, Xend
  
     
-def solveInner(timestamps, nodeEdgeIndex, m):
+def runInner_iteration(timestamps, nodeEdgeIndex, m):
+    if not m:
+        m = inner_point.getInitialTrue(nodeEdgeIndex, active_truth)   
+
     alpha, alphaNodes = getAlphas(timestamps, m)
     Xstart, Xend = getSolution(alphaNodes, m)
     return Xstart, Xend
     
-def iterateInner(timestamps, nodeEdgeIndex, max_iter = 10):
+def runInner(timestamps, max_iter = 10):
 
+    nodeEdgeIndex = utils.getIndex(timestamps, 'inner')
     m = getInitial(nodeEdgeIndex)
     alpha, alphaNodes = getAlphas(timestamps, m)
     Xstart, Xend = getSolution(alphaNodes, m)

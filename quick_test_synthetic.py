@@ -7,17 +7,24 @@ import networkx as nx
 import time 
 import utils
 import operator
+import argparse
 import baseline, budget, inner_point
     
     
       
 if __name__ == "__main__":
-    dataset = 'random'
 
-    alg = sys.argv[1]
-    event_length = int(sys.argv[2]) if len(sys.argv) >= 3  else 100
-    overlap = float(sys.argv[3]) if len(sys.argv) >= 4  else 0.2
-    num_nodes = int(sys.argv[4]) if len(sys.argv) >= 5  else 100
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("algorithm", help="baseline, budget, or inner")
+    parser.add_argument("--intlen", help="length of each active interval", default=100, type=int)
+    parser.add_argument("--overlap", help="activity intervals overlap parameter, between 0 and 1", default=0.2, type=float)
+    parser.add_argument("--nnodes", help="number of nodes in the graph", default=100, type=int)
+    args = parser.parse_args()
+
+    alg = args.algorithm
+    event_length = args.intlen
+    overlap = args.overlap
+    num_nodes = args.nnodes
     
     print 'algorithm:', alg
     print 'set event length:', event_length
@@ -34,12 +41,9 @@ if __name__ == "__main__":
     if alg == 'baseline':
         Xstart, Xend = baseline.baseline2(timestamps)
     elif alg == 'inner':
-        nodeEdgeIndex = utils.getIndex(timestamps, 'inner')    
-        m = inner_point.getInitialTrue(nodeEdgeIndex, active_truth)    
-        Xstart, Xend = inner_point.solveInner(timestamps, nodeEdgeIndex, m)
+        Xstart, Xend = inner_point.runInner(timestamps)
     elif alg == 'budget': 
-        nodeEdgeIndex = utils.getIndex(timestamps, 'budget')
-        Xstart, Xend = budget.runBudget(timestamps, nodeEdgeIndex, b = {node: event_length-1 for node in active_truth})
+        Xstart, Xend = budget.runBudget(timestamps)
     else: 
         print('no algorithm specified')
         exit()

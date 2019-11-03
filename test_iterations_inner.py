@@ -6,6 +6,7 @@ import random
 import pickle
 import numpy as np
 import sys
+import argparse
 import inner_point as inner
 
 
@@ -16,12 +17,15 @@ if __name__ == "__main__":
     plt.rcParams['xtick.labelsize'] = 20
     plt.rcParams['ytick.labelsize'] = 20
 
-    dataset = 'random'
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--intlen", help="length of each active interval", default=100, type=int)
+    parser.add_argument("--overlap", help="activity intervals overlap parameter, between 0 and 1", default=0.5, type=float)
+    parser.add_argument("--nnodes", help="number of nodes in the graph", default=100, type=int)
+    args = parser.parse_args()
 
-    event_length = int(sys.argv[1]) if len(sys.argv) >= 2 else 100
-    overlap = float(sys.argv[2]) if len(sys.argv) >= 3 else 0.5
-    num_nodes = int(sys.argv[3]) if len(sys.argv) >= 4  else 100
-    
+    event_length = args.intlen
+    overlap = args.overlap
+    num_nodes = args.nnodes
     
     G = utils.generateGraph(n = num_nodes)
     timestamps, active_truth = utils.generateIntervals(G, event_length = event_length, overlap = overlap)
@@ -34,10 +38,10 @@ if __name__ == "__main__":
     for iter in iterations:
         if iter == 1:
             m = inner.getInitial(nodeEdgeIndex)
-            Xstart, Xend = inner.solveInner(timestamps, nodeEdgeIndex, m)
+            Xstart, Xend = inner.runInner_iteration(timestamps, nodeEdgeIndex, m)
         else:
             m = inner.getNextInput(nodeEdgeIndex, Xstart, Xend)
-            Xstart, Xend = inner.solveInner(timestamps, nodeEdgeIndex, m)        
+            Xstart, Xend = inner.runInner_iteration(timestamps, nodeEdgeIndex, m)        
         
         Cost_IP.append(utils.getCost(Xstart, Xend)/((event_length-1)*num_nodes))
         p, r, f = utils.compareGT(Xstart,  Xend, active_truth, timestamps)
