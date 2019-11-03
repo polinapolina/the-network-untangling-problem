@@ -114,6 +114,24 @@ def runInner_iteration(timestamps, nodeEdgeIndex, m):
     return Xstart, Xend
     
 def runInner(timestamps, max_iter = 10):
+    """
+    Implements Inner algorithm
+
+    Parameters
+    ----------
+    timestamps : list of tuples
+        Sorted list of interactions [(t1, n1, n2), (t2, n3, n4),...], where t is timestamp, n1 and n2 are interactiong nodes.
+        Nodes in the interactions are sorted lexicographically.
+    maxiter : int
+        maximum number of interactions in binary search
+
+    Returns
+    -------
+    tuple of dicts
+        (dict1, dict2): dict1 of a shape {n1: t1, n2: t2, ..} contains starting point t1 of activity interval of node n1, for every node,
+                        dict2 of a shape {n1: t1, n2: t2, ..} contains ending point t1 of activity interval of node n1, for every node.
+
+    """
 
     nodeEdgeIndex = utils.getIndex(timestamps, 'inner')
     m = getInitial(nodeEdgeIndex)
@@ -133,8 +151,8 @@ def runInner(timestamps, max_iter = 10):
             best = t 
             bestSol = (Xstart, Xend)
         else:
-            break
+            break     
             
-    return bestSol
+    return bestSol[0], bestSol[2]
 
 

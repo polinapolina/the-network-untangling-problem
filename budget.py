@@ -172,12 +172,29 @@ def runBudget_fixed_budget(timestamps, b = {}):
     Xstart, Xend = budgetAlgorithm(timestamps, nodeEdgeIndex, b)
     return Xstart, Xend
     
-def runBudget(timestamps, maxiter = 10, klow = -1, kup = -1):
+def runBudget(timestamps, maxiter = 10):
+    """
+    Implements Budget algorithm
+
+    Parameters
+    ----------
+    timestamps : list of tuples
+        Sorted list of interactions [(t1, n1, n2), (t2, n3, n4),...], where t is timestamp, n1 and n2 are interactiong nodes.
+        Nodes in the interactions are sorted lexicographically.
+    maxiter : int
+        maximum number of interactions in binary search
+
+    Returns
+    -------
+    tuple of dicts
+        (dict1, dict2): dict1 of a shape {n1: t1, n2: t2, ..} contains starting point t1 of activity interval of node n1, for every node,
+                        dict2 of a shape {n1: t1, n2: t2, ..} contains ending point t1 of activity interval of node n1, for every node.
+
+    """
     
     nodeEdgeIndex = utils.getIndex(timestamps, 'budget')
     maxb = timestamps[-1][0]-timestamps[0][0]
-    if klow ==  -1:
-        klow, kup = 1./maxb, 1.0 
+    klow, kup = 1./maxb, 1.0 
     b = {n: maxb for n in nodeEdgeIndex}
     LXstart, LXend = budgetAlgorithm(timestamps, nodeEdgeIndex, b)
     c = 1
@@ -194,7 +211,7 @@ def runBudget(timestamps, maxiter = 10, klow = -1, kup = -1):
         else:
             kup = k
             LXstart, LXend = Xstart, Xend
-            
+    print LXstart
     return LXstart, LXend
 
 
