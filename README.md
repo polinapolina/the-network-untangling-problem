@@ -29,7 +29,7 @@ optional arguments:
   --nnodes NNODES    number of nodes in the graph (default: 100)
 ```
 
-= other experiments =
+### `other_experiments`
 
 * `maximal_convergence.py` tests how the solution by `Inner` algorithm evolves during iterations with re-initialization (iterations of `Maximal` algorithm)
 ```
@@ -75,7 +75,7 @@ optional arguments:
   --nnodes NNODES    number of nodes in the graph (default: 10)
 ```
 
-= other experiments =
+### `other_experiments`
 * `effect_of_k.py` runs all three algorithms (`k-Inner`, `k-Budget`, `k-Baseline`) on a synthesic dataset with different `k`
 * `k_budget_convergence.py` runs `k-Budget` algorithm and reports its performance on iterative search of inactive points 
 * `k_inner_convergence.py` runs `k-Inner` algorithm and reports its performance on iterative search of active points 
