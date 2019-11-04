@@ -56,7 +56,7 @@ if __name__ == "__main__":
         F_B.append(f)
         Costmax_B.append(utils.getMax(Xstart, Xend)/(event_length-1))
 
-        Xstart, Xend = baseline.baseline2(timestamps)
+        Xstart, Xend = baseline.baseline(timestamps)
 
         Cost_BL.append(utils.getCost(Xstart, Xend)/((event_length-1)*num_nodes))
         p, r, f = utils.compareGT(Xstart,  Xend, active_truth, timestamps)

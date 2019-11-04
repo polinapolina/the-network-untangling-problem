@@ -9,17 +9,15 @@ import utils
 import operator
 
 
-def baseline2(timestamps):
+def baseline(timestamps):
     """
-    Implements Budget algorithm
+    Implements Baseline algorithm
 
     Parameters
     ----------
     timestamps : list of tuples
         Sorted list of interactions [(t1, n1, n2), (t2, n3, n4),...], where t is timestamp, n1 and n2 are interactiong nodes.
         Nodes in the interactions are sorted lexicographically.
-    maxiter : int
-        maximum number of interactions in binary search
 
     Returns
     -------
@@ -37,5 +35,4 @@ def baseline2(timestamps):
         s = sorted([i[0] for i in nodeEdgeIndex[node]])
         Xstart[node], Xend[node] = s[0], s[-1]
         timestamps = [x for x in timestamps if x[1] != node and x[2] != node]
-
     return Xstart, Xend
