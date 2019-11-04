@@ -7,7 +7,7 @@ import k_utils as utils
 
 def runKBudget(timestamps, k, maxiters = 10, m = {}):
     """
-    Implements Budget algorithm
+    Implements k-Budget algorithm
 
     Parameters
     ----------
