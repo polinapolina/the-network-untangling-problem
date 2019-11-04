@@ -6,7 +6,7 @@ Polina Rozenshtein, Nikolaj Tatti and Aristides Gionis. "The network-untangling 
 = list of used packages =
 * https://pypi.python.org/pypi/networkx/1.11
 
-= Case k=1 =
+## Case k=1
 
 * `inner_point.py` implements algorithm Inner. For details see function `runInner`.
 * `budget.py` implements algorithm Budget. For details see function `runBudget`.
