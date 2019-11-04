@@ -52,3 +52,9 @@ optional arguments:
 
 ## `multiple_intervals` directory for case k>1
 
+= other experiments =
+* `effect_of_k.py` runs all three algorithms (`k-Inner`, `k-Budget`, `k-Baseline`) on a synthesic dataset with different `k`
+* `k_budget_convergence.py` runs `k-Budget` algorithm and reports its performance on iterative search of inactive points 
+* `k_inner_convergence.py` runs `k-Inner` algorithm and reports its performance on iterative search of active points 
+* `sensitivity_to_initialization.py` runs `k-Inner` and `k-Budget` algorithm for different percent of randomly selected initial active/inactive points
+
