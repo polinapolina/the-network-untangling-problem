@@ -12,7 +12,6 @@ Polina Rozenshtein, Nikolaj Tatti and Aristides Gionis. "The network-untangling 
 * `budget.py` implements algorithm Budget. For details see function `runBudget`.
 * `baseline.py` implements a greedy baseline. For details see function `baseline`.
 
-= experiments =
 * `quick_test_synthetic.py` runs any of 3 algorithms on a synthetic dataset and reports statistics of the solution.
 ```
 usage: quick_test_synthetic.py [-h] [--intlen INTLEN] [--overlap OVERLAP]
@@ -30,9 +29,11 @@ optional arguments:
   --nnodes NNODES    number of nodes in the graph (default: 100)
 ```
 
-* `test_iterations_inner.py` tests how the solution by `Inner Point` algorithm evolves during iterations with re-initialization
+### `other_experiments`
+
+* `maximal_convergence.py` tests how the solution by `Inner` algorithm evolves during iterations with re-initialization (iterations of `Maximal` algorithm). The results here are reported based on a single run on a synthetic dataset.
 ```
-usage: test_iterations_inner.py [-h] [--intlen INTLEN] [--overlap OVERLAP]
+usage: maximal_convergence.py [-h] [--intlen INTLEN] [--overlap OVERLAP]
                                 [--nnodes NNODES]
 
 optional arguments:
@@ -41,7 +42,7 @@ optional arguments:
                      (default: 0.5)
   --nnodes NNODES    number of nodes in the graph (default: 100)
 ```
-* `test_overlap.py` tests both algorithms on the synthetic dataset with varying overlap parameter
+* `different_overlap.py` tests both algorithms on the synthetic dataset with varying overlap parameter. The results here are reported based on a single run on a synthetic dataset.
 ```
 usage: test_overlap.py [-h] [--intlen INTLEN] [--nnodes NNODES]
 
@@ -74,11 +75,14 @@ optional arguments:
   --nnodes NNODES    number of nodes in the graph (default: 10)
 ```
 
-= other experiments =
+### `other_experiments`
 * `effect_of_k.py` runs all three algorithms (`k-Inner`, `k-Budget`, `k-Baseline`) on a synthesic dataset with different `k`
 * `k_budget_convergence.py` runs `k-Budget` algorithm and reports its performance on iterative search of inactive points 
 * `k_inner_convergence.py` runs `k-Inner` algorithm and reports its performance on iterative search of active points 
-* `sensitivity_to_initialization.py` runs `k-Inner` and `k-Budget` algorithm for different percent of randomly selected initial active/inactive points
+* `sensitivity_to_initialization.py` runs `k-Inner` and `k-Budget` algorithm for different percent of randomly selected initial active/inactive points.
+
+All results here are reported based on a single run on a synthetic dataset.
+
 
 Please see `--help` for arguments 
 
