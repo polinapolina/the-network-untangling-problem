@@ -1,4 +1,4 @@
-# the-network-untangling-problem
+## the-network-untangling-problem
 Implementations for experiments included in the paper:
 
 Polina Rozenshtein, Nikolaj Tatti and Aristides Gionis. "The network-untangling problem: From interactions to activity timelines."
@@ -6,7 +6,7 @@ Polina Rozenshtein, Nikolaj Tatti and Aristides Gionis. "The network-untangling 
 = list of used packages =
 * https://pypi.python.org/pypi/networkx/1.11
 
-## `single_interval` directory for case k=1
+### `single_interval` directory for case k=1
 
 * `inner_point.py` implements algorithm Inner. For details see function `runInner`.
 * `budget.py` implements algorithm Budget. For details see function `runBudget`.
@@ -29,7 +29,7 @@ optional arguments:
   --nnodes NNODES    number of nodes in the graph (default: 100)
 ```
 
-### `other_experiments`
+#### `other_experiments`
 
 * `maximal_convergence.py` tests how the solution by `Inner` algorithm evolves during iterations with re-initialization (iterations of `Maximal` algorithm). The results here are reported based on a single run on a synthetic dataset.
 ```
@@ -51,7 +51,7 @@ optional arguments:
   --nnodes NNODES  number of nodes in the graph (default: 100)
 ```
 
-## `multiple_intervals` directory for case k>1
+### `multiple_intervals` directory for case k>1
 
 * `k_inner_point.py` implements algorithm k-Inner. For details see function `runKInner`.
 * `k_budget.py` implements algorithm k-Budget. For details see function `runKBudget`.
@@ -75,7 +75,7 @@ optional arguments:
   --nnodes NNODES    number of nodes in the graph (default: 10)
 ```
 
-### `other_experiments`
+#### `other_experiments`
 * `effect_of_k.py` runs all three algorithms (`k-Inner`, `k-Budget`, `k-Baseline`) on a synthesic dataset with different `k`
 * `k_budget_convergence.py` runs `k-Budget` algorithm and reports its performance on iterative search of inactive points 
 * `k_inner_convergence.py` runs `k-Inner` algorithm and reports its performance on iterative search of active points 
