@@ -127,37 +127,33 @@ def generateToyGraph():
     return G
     
 def generateIntervals(G, distance_in = 1, event_length = 10, distance_inter = 1, overlap = 0.1, seed = 1.0, number_intervals = 10):
-    G.remove_nodes_from(nx.isolates(G)) 
+    G.remove_nodes_from(nx.isolates(G))
     random.seed(seed)
     timestmps = []
     
     nodes = list(G.nodes())
     active = {n: [] for n in nodes}
-    active_percent = 1.0
-    active_nodes = int(active_percent*G.number_of_nodes())
-    
-    shuffle(nodes)
+    allnodes = []
+    for i in range(number_intervals):
+        shuffle(nodes)
+        allnodes += nodes
     
     current = 0
-    for intervals in xrange(number_intervals):        
-        for n in nodes:        
-            s = current        
-            l = event_length
-            for i in xrange(l):
-                neigh = list(G.neighbors(n))
-                n_neigh = np.random.choice(neigh)
-                n1, n2 = (n, n_neigh) if n < n_neigh else (n_neigh, n)            
-                timestmps.append((current, n1, n2))
-                current += distance_in
-            current -= distance_in
-            f = current
-            if overlap > 0:
-                current = max(f - int((f-s)*overlap), 0)
-            else:
-                current = f + distance_inter
-            
-            active[n].append((s,f))
-        current = f + distance_inter
+    for n in allnodes:
+        l = event_length
+        s, f = current, current + distance_in*(l-1)
+        randt = list(s + np.random.rand(l-2)*(f-s)) + [s, f]
+        for i in xrange(l):
+            neigh = list(G.neighbors(n))
+            n2 = np.random.choice(neigh)
+            n1, n2 = (n, n2) if n < n2 else (n2, n) 
+            timestmps.append((randt[i], n1, n2))
+
+        if overlap > 0:
+            current = max(f - int((f-s)*overlap), 0)
+        else:
+            current = f + distance_inter
+        active[n].append((s,f))
     timestmps = list(set(timestmps))
     timestmps.sort()
     return timestmps, active

@@ -132,25 +132,25 @@ def generateIntervals(G, distance_in = 1, event_length = 10, distance_inter = 1,
             active = {}
             nodes = G.nodes()
             shuffle(nodes)
-             
+                 
             current = 0
-            for n in nodes:        
-                s = current        
+            for n in nodes:       
                 l = event_length
+                s, f = current, current + distance_in*(l-1)
+                randt = list(s + np.random.rand(l-2)*(f-s)) + [s, f]
                 for i in xrange(l):
                     neigh = G.neighbors(n)
-                    timestmps.append((current, n, np.random.choice(neigh)))
-                    current += distance_in
-                current -= distance_in
-                f = current
+                    n2 = np.random.choice(neigh)
+                    n1, n2 = (n, n2) if n < n2 else (n2, n) 
+                    timestmps.append((randt[i], n1, n2))
                 if overlap > 0:
                     current = max(f - int((f-s)*overlap), 0)
                 else:
                     current = f + distance_inter
                 active[n] = (s,f)         
-                
+                    
             timestmps.sort()
-                
+                    
             return timestmps, active
         except:
             pass
